@@ -1,16 +1,37 @@
-import Footer from './components/Footer';
-import Itemlistcontainer from './components/Itemlistcontainer';
-import Navbar from './components/Navbar';
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Checkout from "./components/Checkout";
+import Contacto from "./components/Contacto";
+import ItemListContainer from "./components/ItemListContainer";
+import ItemDetailContainer from "./components/ItemDetailContainer";
 
-function App() {
+import Navbar from "./components/Navbar";
+import ContextContainer from "./components/ContextContainer";
+
+export default function App() {
   return (
-    <div>
-      <Navbar />
-      <Itemlistcontainer greeting={"Hola Gente"} />
-      <Footer />
-    </div>
+    <ContextContainer>
+      <BrowserRouter>
+        {/* PONGO COMPONENTES QUE QUIERO QUE ESTEN EN TODAS LAS RUTAS */}
+        <Navbar />
+        {/* ACA DECLARO RUTAS PUNTUALES */}
+        <Routes>
+          <Route path="/" element={<ItemListContainer />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/contacto" element={<Contacto />} />
+          <Route path="/category/:idcategory" element={<ItemListContainer />} />
+          <Route path="/item/:iditem" element={<ItemDetailContainer />} />
+          {/* <Route path="/item/:iditem" element={<ItemDetailContainer />} /> */}
+          <Route />
+          <Route />
+          <Route />
+        </Routes>
+        {/* PONGO COMPONENTES QUE QUIERO QUE ESTEN EN TODAS LAS RUTAS ABAJO DE TODO*/}
+      </BrowserRouter>
+    </ContextContainer>
   );
 }
-
-export default App;
