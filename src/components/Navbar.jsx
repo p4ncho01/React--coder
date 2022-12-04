@@ -15,11 +15,9 @@ import { Link } from "react-router-dom";
 
 const pages = [
     { label: "Home", link: "/" },
-    { label: "Checkout", link: "/checkout" },
+    { label: "Producto", link: "/producto" },
     { label: "Contacto", link: "/contacto" },
-    { label: "deportes", link: "/category/deportes" },
-    { label: "fiesta", link: "/category/fiesta" },
-    { label: "test", link: "/test" },
+
 ];
 
 export default function Navbar() {
