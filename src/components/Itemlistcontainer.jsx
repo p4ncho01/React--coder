@@ -1,34 +1,39 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import "./ItemListContainer";
-import { productosHC } from "./data.js";
-import ItemList from "./ItemList";
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import ItemList from './ItemList';
+import './ItemListcontainer';
 
 export default function ItemListContainer() {
+  console.log('render de item list container');
   const { idcategory } = useParams();
 
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    // alert("cambio la categoria por eso salta de nuevo este efecto");
-    const productosPromise = new Promise((res, rej) => {
-      setTimeout(() => {
-        res(productosHC);
-      }, 2000);
-    });
+    const db = getFirestore();
+    let productos;
+    if (idcategory) {
+      productos = query(collection(db, 'productos'), where('categoria', '==', idcategory));
+    } else {
+      productos = collection(db, 'productos');
+    }
 
-    productosPromise.then((res) => {
-      if (idcategory) {
-        setProductos(res.filter((item) => item.category == idcategory));
-      } else {
-        setProductos(res);
-      }
+    getDocs(productos).then((res) => {
+      console.log(res.docs);
+
+      const arrayNorm = res.docs.map((element) => {
+        return { id: element.id, name: element.data().nombre, category: element.data().categoria, precio: element.data().precio, stock: element.data().stock };
+      });
+
+      console.log(arrayNorm);
+      setProductos(arrayNorm);
+
     });
   }, [idcategory]);
 
   return (
-    <div style={{ border: "2px solid red", margin: "10px" }}>
+    <div style={{ border: '2px solid red', margin: '10px' }}>
       <ItemList productos={productos} />;
     </div>
   );

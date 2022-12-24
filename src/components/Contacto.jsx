@@ -2,7 +2,7 @@ import React from 'react'
 import { BsWhatsapp } from "react-icons/bs";
 import { HiOutlineMail } from "react-icons/hi";
 import { BsGeoAlt } from "react-icons/bs";
-import './contacto.scss'
+import '../styles/contacto.css'
 
 function Contacto() {
   return (

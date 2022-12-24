@@ -1,8 +1,7 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { productosHC } from "./data";
-import ItemDetail from "./ItemDetail";
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import ItemDetail from './ItemDetail';
 
 export default function ItemDetailContainer({ greeting }) {
   const { iditem } = useParams();
@@ -10,23 +9,17 @@ export default function ItemDetailContainer({ greeting }) {
   const [producto, setProducto] = useState({});
 
   useEffect(() => {
-    const productoPromise = new Promise((res, rej) => {
-      setTimeout(() => {
-        // devuelve todos
-        // res(productosHC);
+    const db = getFirestore();
 
-        //devuelve uno
-        res(productosHC.find((item) => item.id == iditem));
-      }, 2000);
-    });
+    let docSinNorm = doc(db, 'productos', iditem);
 
-    productoPromise.then((res) => {
-      setProducto(res);
+    getDoc(docSinNorm).then((item) => {
+      setProducto({ id: item.id, ...item.data() });
     });
   }, [iditem]);
 
   return (
-    <div style={{ border: "2px solid black", margin: "10px" }}>
+    <div style={{ border: '2px solid black', margin: '10px' }}>
       <ItemDetail producto={producto} />
     </div>
   );
